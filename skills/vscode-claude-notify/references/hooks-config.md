@@ -15,7 +15,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/skills/vscode-claude-notify/scripts/notify-wsl.sh 'Claude Code' '작업이 완료되었습니다'"
+            "command": "~/.claude/skills/vscode-claude-notify/scripts/notify-wsl.sh 'Claude Code'"
           }
         ]
       }
@@ -46,7 +46,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/skills/vscode-claude-notify/scripts/notify-mac.sh 'Claude Code' '작업이 완료되었습니다'"
+            "command": "~/.claude/skills/vscode-claude-notify/scripts/notify-mac.sh 'Claude Code'"
           }
         ]
       }
@@ -77,7 +77,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell.exe -ExecutionPolicy Bypass -File \"%USERPROFILE%\\.claude\\skills\\vscode-claude-notify\\scripts\\notify-windows.ps1\" -Title \"Claude Code\" -Message \"작업 완료\""
+            "command": "powershell.exe -ExecutionPolicy Bypass -File \"%USERPROFILE%\\.claude\\skills\\vscode-claude-notify\\scripts\\notify-windows.ps1\" -Title \"Claude Code\""
           }
         ]
       }

@@ -1,7 +1,7 @@
 #!/bin/bash
 # WSL 환경: powershell.exe를 통해 Windows BalloonTip 알림 전송
 TITLE="${1:-Claude Code}"
-MESSAGE="${2:-알림}"
+MESSAGE="${2:-작업이 완료되었습니다}"
 
 powershell.exe -Command "
   Add-Type -AssemblyName System.Windows.Forms
