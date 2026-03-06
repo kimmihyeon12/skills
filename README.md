@@ -10,7 +10,7 @@
 | [sveltekit-progressive-architecture](./skills/sveltekit-progressive-architecture/) | SvelteKit 개발 가이드라인 |
 | [sveltekit-shadcn-guidline](./skills/sveltekit-shadcn-guidline/) | SvelteKit + shadcn-svelte 컴포넌트 활용 가이드 |
 | [vscode-claude-notify](./skills/vscode-claude-notify/) | VSCode Claude 알림 버그 우회 — OS 네이티브 알림으로 작업 완료·오류 수신 (Windows/macOS/WSL) |
-| [usecase-diagram-gen](./skills/usecase-diagram-gen/) | RFP·기획문서·메모에서 도메인 경계 기반 Mermaid 유즈케이스 다이어그램 자동 생성 및 업데이트 (.pdf/.txt/.md 지원) |
+| [screen-design-doc](./skills/screen-design-doc/) | RFP·기획문서·메모에서 IA(사이트맵)와 화면설계서를 자동 생성 및 업데이트. SC ID·요구사항 ID 추적 지원 (.pdf/.txt/.md) |
 
 ## 설치하기
 
