@@ -1,0 +1,34 @@
+{
+  "cli_version": "0.4.7",
+  "checkpoint_id": "5d5713865576",
+  "session_id": "235a5991-02ea-462f-8557-02d53d92f933",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-06T13:24:29.232549911Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "skills/screen-design-doc/SKILL.md",
+    "skills/screen-design-doc/references/screen-design-guide.md",
+    "README.md"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "36392579759c",
+  "checkpoint_transcript_start": 260,
+  "transcript_lines_at_start": 260,
+  "token_usage": {
+    "input_tokens": 29,
+    "cache_creation_tokens": 24308,
+    "cache_read_tokens": 2370535,
+    "output_tokens": 18556,
+    "api_call_count": 21
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-06T13:24:29.042935829Z",
+    "agent_lines": 403,
+    "human_added": 75,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 478,
+    "agent_percentage": 84.30962343096235
+  }
+}

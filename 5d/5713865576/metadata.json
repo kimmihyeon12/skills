@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.4.7",
+  "checkpoint_id": "5d5713865576",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "README.md",
+    "skills/screen-design-doc/SKILL.md",
+    "skills/screen-design-doc/references/screen-design-guide.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/5d/5713865576/0/metadata.json",
+      "transcript": "/5d/5713865576/0/full.jsonl",
+      "context": "/5d/5713865576/0/context.md",
+      "content_hash": "/5d/5713865576/0/content_hash.txt",
+      "prompt": "/5d/5713865576/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 29,
+    "cache_creation_tokens": 24308,
+    "cache_read_tokens": 2370535,
+    "output_tokens": 18556,
+    "api_call_count": 21
+  }
+}
