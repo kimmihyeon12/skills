@@ -5,7 +5,7 @@
 | 스킬 | 설명 |
 |------|------|
 | [wiki-creator](./skills/wiki-creator/) | 프로젝트 위키 문서 생성 및 관리 |
-| [mvp-preview](./skills/mvp-preview/) | 핵심 기능을 빠르게 만들고 링크로 공유하는 워크플로우 (토론→구현→공유) |
+| [html-prototype](./skills/html-prototype/) | 요구사항 문서·화면설계서에서 순수 HTML/CSS/JS 클릭 가능한 프로토타입 자동 생성 (.pdf/.txt/.md 지원) |
 | [media-storage](./skills/media-storage/) | 파일 업로드·저장소·첨부 관리 패턴 (R2, blob, 색상 추출) |
 | [sveltekit-progressive-architecture](./skills/sveltekit-progressive-architecture/) | SvelteKit 개발 가이드라인 |
 | [sveltekit-shadcn-guidline](./skills/sveltekit-shadcn-guidline/) | SvelteKit + shadcn-svelte 컴포넌트 활용 가이드 |

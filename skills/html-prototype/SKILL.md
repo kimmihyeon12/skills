@@ -1,5 +1,5 @@
 ---
-name: mvp-preview
+name: html-prototype
 description: >
   요구사항 문서, 화면설계서, 아이디어 메모 등에서 순수 HTML/CSS/JS 화면 프리뷰를 즉시 생성하는 스킬.
   .pdf/.txt/.md 파일 또는 screen-design/ 폴더를 입력으로 받아 화면별 HTML 파일을 만들고 링크로 공유할 수 있게 한다.
@@ -56,7 +56,7 @@ metadata:
 cd ~/.claude/skills/mvp-preview/scripts && npm install --silent
 
 # 텍스트 추출 — 반드시 이 경로로 저장
-node ~/.claude/skills/mvp-preview/scripts/extract_pdf_text.js \
+node ~/.claude/skills/html-prototype/scripts/extract_pdf_text.js \
   <입력.pdf> -o <워크스페이스_루트>/preview/extracted/source.txt
 ```
 
