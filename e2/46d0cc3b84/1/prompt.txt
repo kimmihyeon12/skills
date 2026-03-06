@@ -1,0 +1,129 @@
+Implement the following plan:
+
+# Plan: html-prototype 공통 컴포넌트를 Web Components로 전환
+
+## 컨텍스트
+
+현재 `build.md`에 추가된 공통 컴포넌트 패턴은 함수 기반(`renderNavbar()`, `renderSidebar()`)이라
+placeholder div + JS 호출이 필요하다. Web Components(`customElements.define`) 방식으로 바꾸면
+HTML에 `<app-navbar title="목록" back-href="index.html">` 처럼 선언적으로 사용할 수 있어 훨씬 깔끔하다.
+
+또한 스킬 절차를 개선해, Step 3(화면 목록 분석) 직후 공통 UI를 파악하고
+**HTML 파일 생성 전에 `components.js`를 먼저 만드는** 순서로 바꾼다.
+
+## 변경 파일
+
+- `skills/html-prototype/references/build.md`
+- `skills/html-prototype/SKILL.md`
+
+---
+
+## 1. `references/build.md` — 공통 컴포넌트 패턴 섹션 교체
+
+현재 함수 기반 섹션을 아래 Web Components 버전으로 교체한다.
+
+**`preview/components.js` 예시:**
+
+```js
+class AppNavbar extends HTMLElement {
+  connectedCallback() {
+    const title    = this.getAttribute('title') || '';
+    const backHref = this.getAttribute('back-href');
+    this.innerHTML = `
+      <nav style="background:#fff; border-bottom:1px solid #eee; padding:12px 16px;
+                  display:flex; align-items:center; gap:12px;">
+        ${backHref ? `<a href="${backHref}"
+            style="background:none; border:none; font-size:18px;
+                   cursor:pointer; text-decoration:none; color:#111;">←</a>` : ''}
+        <span style="font-weight:600;">${title}</span>
+      </nav>`;
+  }
+}
+customElements.define('app-navbar', AppNavbar);
+
+class AppSidebar extends HTMLElement {
+  connectedCallback() {
+    const active = this.getAttribute('active') || '';
+    const menus = [
+      { id: 'home',  label: '홈',  href: '02-dashboard.html' },
+      { id: 'list',  label: '목록', href: '03-list.html' },
+    ];
+    this.innerHTML = `
+      <aside style="width:200px; background:#fff; border-right:1px solid #eee;
+                    padding:16px; min-height:100vh;">
+        ${menus.map(m => `
+          <a href="${m.href}" style="display:block; padding:10px 12px; border-radius:6px;
+             text-decoration:none; margin-bottom:4px;
+             ${m.id === active
+               ? 'background:#111; color:#fff;'
+               : 'color:#444;'}">
+            ${m.label}
+          </a>`).join('')}
+      </aside>`;
+  }
+}
+customElements.define('app-sidebar', AppSidebar);
+```
+
+**각 HTML에서 사용:**
+
+```html
+<script src="./components.js"></script>
+
+<app-navbar title="목록" back-href="index.html"></app-navbar>
+
+<!-- 사이드바 + 본문 레이아웃 -->
+<div style="display:flex;">
+  <app-sidebar active="list"></app-sidebar>
+  <div style="flex:1; padding:24px;">
+    <!-- 본문 내용 -->
+  </div>
+</div>
+```
+
+**사용 기준**: 공통 UI가 3개 이상 화면에 반복될 때만 `components.js`를 만든다.
+
+파일 구조도 함께 업데이트:
+```
+preview/
+├── index.html
+├── components.js   ← 공통 Web Components (선택)
+├── 01-login.html
+...
+```
+
+---
+
+## 2. `SKILL.md` — Step 4 절차 개선
+
+현재 Step 4 앞에 **Step 3.5** 를 삽입한다 (또는 Step 4를 두 단계로 분리):
+
+> **Step 3.5 — 공통 컴포넌트 생성 (해당 시)**
+> 화면 분석 결과, 네비게이션 바 · 사이드바 · 하단 탭 바 등이 3개 이상 화면에 반복되면
+> HTML 파일 생성 전에 `preview/components.js`를 먼저 작성한다.
+> 각 공통 요소를 Web Component로 정의하고, 해당 앱의 실제 메뉴 구조를 반영한다.
+
+Step 4 핵심 원칙의 마지막 줄도 갱신:
+- (기존) `공통 네비게이션/사이드바가 3개 이상 화면에 반복되면 preview/components.js로 분리`
+- (변경) `공통 UI가 3개 이상 화면에 반복되면 Step 3.5에서 미리 만든 components.js의 Web Component 태그를 사용`
+
+
+If you need specific details from before exiting plan mode (like exact code snippets, error messages, or content you generated), read the full transcript at: /home/devgo/.claude/projects/-home-devgo-my-skills/c6ffef6b-1f49-4046-bfc3-ff0d718cf399.jsonl
+
+If this plan can be broken down into multiple independent tasks, consider using the TeamCreate tool to create a team and parallelize the work.
+
+---
+
+Tool loaded.
+
+---
+
+Tool loaded.
+
+---
+
+커밋 푸쉬 해줘
+
+---
+
+Tool loaded.
