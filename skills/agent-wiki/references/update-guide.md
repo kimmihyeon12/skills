@@ -7,6 +7,7 @@
 ## U-Step 1 — 현황 파악
 
 기존 파일을 모두 읽어 현재 상태를 파악한다:
+- `product-brief.md` — 제품 컨텍스트 (없을 수 있음)
 - `product-backlog.md` — Epic/Story 목록, 의존성 맵
 - `definition-of-done.md` — 현재 DoD
 - `epics/ep-*.md` — 각 Epic 문서
@@ -25,7 +26,10 @@
 [수정] Story명 변경, 우선순위 변경, 라벨 변경, AC 수정
 [삭제] Story 제거, Epic 통합
 [이동] Story의 Epic 소속 변경 (ID는 유지)
+[Product Brief] 제품 컨텍스트 수정 (플랫폼, 사용자, 기술 제약 등)
 ```
+
+**Product Brief가 없는 기존 위키:** `product-brief.md`가 없으면 기존 백로그와 Epic/Story를 분석하여 Product Brief 역생성을 제안한다. 사용자가 동의하면 `references/product-brief-guide.md`를 참고하여 생성한다.
 
 애매한 부분이 있으면 작업 전에 사용자에게 확인한다.
 
@@ -41,6 +45,8 @@
 | Story 삭제 | 해당 Story `.md` 삭제 + 소속 Epic `.md` + `product-backlog.md` |
 | Epic 삭제 | Epic `.md` 삭제 + 하위 Story 처리 + `product-backlog.md` |
 | DoD 수정 | `definition-of-done.md` |
+| Product Brief 수정 | `product-brief.md` |
+| Product Brief 신규 | `product-brief.md` 생성 (`references/product-brief-guide.md` 참고) |
 
 **ID 처리:**
 - 기존 ID는 절대 변경하지 않는다 (추적 이력 보존)

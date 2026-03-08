@@ -34,10 +34,10 @@ SKILL.md 프론트매터의 `name`은 **영문 소문자 + 하이픈(-)만** 허
 name: {프로젝트슬러그}-wiki
 description: >
   {프로젝트명} 프로젝트의 위키 스킬.
-  Product Backlog, Epic, User Story, Definition of Done 문서를 포함하며,
+  Product Brief, Product Backlog, Epic, User Story, Definition of Done 문서를 포함하며,
   에이전트가 프로젝트를 이해하고 작업할 때 참고 자료로 활용한다.
-  이 스킬이 설치된 프로젝트에서 에이전트는 요구사항, 우선순위, 인수 조건,
-  의존성 관계를 파악할 수 있다.
+  이 스킬이 설치된 프로젝트에서 에이전트는 제품 컨텍스트(플랫폼, 대상 사용자),
+  요구사항, 우선순위, 인수 조건, 의존성 관계를 파악할 수 있다.
 ---
 
 # {프로젝트명} Wiki
@@ -46,14 +46,16 @@ description: >
 
 ## 진입점
 
+- [Product Brief](product-brief.md) — 제품 컨텍스트 (플랫폼, 대상 사용자, 기술 제약)
 - [Product Backlog](product-backlog.md) — 전체 Epic/Story 인덱스
 - [Definition of Done](definition-of-done.md) — 완료 기준
 
 ## 문서 구조
 
+- `product-brief.md` — 제품 컨텍스트 (플랫폼, 대상 사용자, 기술 제약)
 - `product-backlog.md` — 전체 인덱스 (Epic 목록, Story 전체 목록, 의존성 맵)
-- `epics/` — Epic별 상세 문서 (소속 Story 링크)
-- `user-stories/` — User Story별 상세 문서 (인수 조건, 의존성)
+- `epics/` — Epic별 상세 문서 (소속 Story 링크, 데이터 모델)
+- `user-stories/` — User Story별 상세 문서 (인수 조건, 의존성, UI/화면)
 - `definition-of-done.md` — 공통 완료 기준
 
 ## 활용 방법
@@ -81,6 +83,7 @@ description: >
 
 | 문서 | 설명 |
 |------|------|
+| [product-brief.md](product-brief.md) | 제품 컨텍스트 — 플랫폼, 대상 사용자, 기술 제약 |
 | [product-backlog.md](product-backlog.md) | 전체 인덱스 — Epic/Story 목록, 의존성 맵 |
 | [definition-of-done.md](definition-of-done.md) | 공통 완료 기준 |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | 문서 수정 규칙 |

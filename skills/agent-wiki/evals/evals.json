@@ -16,7 +16,9 @@
         "product-backlog.md의 Story 링크가 실제 파일 경로와 일치한다",
         "각 User Story에 '~로서, ~하고 싶다' 형식의 스토리 문장이 있다",
         "각 User Story에 인수 조건(Acceptance Criteria) 체크리스트가 있다",
-        "구두 설명이 .sources/v1_verbal-input.txt에 저장되어 있다"
+        "구두 설명이 .sources/v1_verbal-input.txt에 저장되어 있다",
+        "product-brief.md 파일이 워크스페이스 루트에 존재한다",
+        "product-brief.md에 플랫폼 유형이 포함되어 있다"
       ]
     },
     {
@@ -33,7 +35,10 @@
         "각 User Story에 라벨(frontend, backend 등)이 지정되어 있다",
         "원본 .md 파일이 .sources/로 이동되었다",
         "워크스페이스 루트에 원본 .md 파일이 남아있지 않다",
-        "product-backlog.md 소스 이력에 해당 파일이 기록되어 있다"
+        "product-backlog.md 소스 이력에 해당 파일이 기록되어 있다",
+        "product-brief.md 파일이 워크스페이스 루트에 존재한다",
+        "product-brief.md에 플랫폼 유형이 포함되어 있다",
+        "product-brief.md에 대상 사용자 테이블이 포함되어 있다"
       ]
     },
     {
@@ -47,6 +52,20 @@
         "product-backlog.md의 Story 전체 목록에 새 Story가 추가되었다",
         "새 Story가 소속된 Epic 문서에 해당 Story 링크가 추가되었다",
         "새 Story 문서에 인수 조건이 포함되어 있다"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "이 위키에 product-brief.md가 없네. 기존 백로그를 분석해서 Product Brief를 만들어줘.",
+      "expected_output": "기존 product-backlog.md와 Epic/Story 문서를 분석하여 product-brief.md를 역생성. 제품명, 플랫폼 유형, 대상 사용자 등 제품 컨텍스트가 기존 문서에서 역도출됨.",
+      "files": [],
+      "assertions": [
+        "product-brief.md 파일이 워크스페이스 루트에 생성되었다",
+        "product-brief.md에 제품 개요 테이블이 포함되어 있다",
+        "product-brief.md에 플랫폼 유형이 포함되어 있다",
+        "product-brief.md에 대상 사용자 테이블이 포함되어 있다",
+        "product-brief.md의 내용이 기존 백로그/Epic/Story와 일관성이 있다",
+        "기존 product-backlog.md의 개요에 Product Brief 링크가 추가되었다"
       ]
     }
   ]

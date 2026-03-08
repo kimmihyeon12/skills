@@ -8,13 +8,14 @@
 
 CMMI 같은 프레임워크는 추적성과 구조에 대한 좋은 원칙을 가지고 있고, 애자일은 가볍고 반복적인 접근에 강점이 있다. agent-wiki는 이 둘에서 각각 도움이 되는 부분을 가져와 조합해봤다. CMMI에서는 추적성과 ID 체계를, 애자일에서는 Epic/User Story/DoD 같은 가벼운 문서 단위를 빌려왔다.
 
-기획 메모, RFP, 구두 설명 등 어떤 형태의 입력이든 받아서 Product Backlog → Epic → User Story → DoD로 정리해준다.
+기획 메모, RFP, 구두 설명 등 어떤 형태의 입력이든 받아서 Product Brief → Product Backlog → Epic → User Story → DoD로 정리해준다. Product Brief는 플랫폼 유형, 대상 사용자, 기술 제약 같은 제품 컨텍스트를 캡처해서, 에이전트가 "웹인지 앱인지" 같은 기본 맥락을 알고 작업할 수 있게 한다.
 
 ## 문서가 곧 스킬이 된다
 
 이 스킬이 조금 특별한 점은, 생성된 문서가 [Agent Skill](https://agentskills.io) 형식으로 구성된다는 것이다. SKILL.md, CONTRIBUTING.md, 상호 링크가 포함된 스킬 패키지가 만들어진다.
 
 이 위키 스킬을 실제 프로젝트(frontend, backend, mobile 등)에 설치하면, 에이전트가 작업을 시작하기 전에:
+- 제품 컨텍스트(플랫폼, 대상 사용자, 기술 제약)를 파악하고
 - 전체 요구사항과 우선순위를 파악하고
 - 각 Story의 인수 조건으로 완료 기준을 확인하고
 - Story 간 의존성으로 작업 순서를 판단할 수 있다
@@ -40,10 +41,11 @@ PM이 기획을 정리하면, 에이전트가 그 맥락을 이해한 채로 작
 ├── README.md                   ← 프로젝트 위키 개요
 ├── CONTRIBUTING.md             ← 문서 수정 규칙
 ├── .gitignore
+├── product-brief.md            ← 제품 컨텍스트 (플랫폼, 사용자, 기술 제약)
 ├── product-backlog.md          ← 진입점 (전체 인덱스)
 ├── definition-of-done.md       ← 완료 기준
-├── epics/                      ← Epic별 상세
-├── user-stories/               ← Story별 상세 (인수 조건 포함)
+├── epics/                      ← Epic별 상세 (+ 선택적 데이터 모델)
+├── user-stories/               ← Story별 상세 (인수 조건 + 선택적 UI/화면)
 └── .sources/                   ← 입력 원본 버전별 보관
 ```
 
