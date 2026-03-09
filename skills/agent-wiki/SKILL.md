@@ -115,7 +115,9 @@ node ~/.claude/skills/agent-wiki/scripts/extract_pdf_text.js \
 
 모든 문서에 상호 링크 포함 (Backlog ↔ Epic ↔ Story).
 
-**스킬 이름 결정:** `references/wiki-skill-guide.md`의 이름 규칙을 따른다. 워크스페이스 폴더명이 영문+하이픈이면 `{폴더명}-wiki`, 아니면 프로젝트 성격에서 영문 슬러그를 도출하여 `{슬러그}-wiki`로 짓는다.
+**스킬 이름 결정:** `references/wiki-skill-guide.md`의 이름 규칙을 따른다. 워크스페이스 폴더명이 이미 `-wiki`로 끝나면 그대로, 영문+하이픈이면 `{폴더명}-wiki`, 아니면 프로젝트 성격에서 영문 슬러그를 도출하여 `{슬러그}-wiki`로 짓는다.
+
+**스크립트 복사:** 원격 리포 정보가 있으면 `scripts/create-mr.js`를 워크스페이스의 `scripts/`에 복사한다. 이 스크립트는 credentials 읽기와 MR/PR 생성을 자동 처리한다.
 
 ### Step 7 — 결과 보고
 

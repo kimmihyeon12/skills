@@ -79,7 +79,7 @@ CONTRIBUTING.md의 문서 규칙(ID, 파일명, 상호 링크)을 준수한다.
 
 ## R-Step 5 — 커밋 및 MR/PR 생성
 
-### 커밋
+### 커밋 및 push
 
 ```bash
 git add -A
@@ -87,25 +87,23 @@ git commit -m "[{skill-name}] 변경 요약"
 git push origin contrib/{skill-name}-{설명}
 ```
 
-### GitHub PR 생성
+### MR/PR 생성
+
+`scripts/create-mr.js` 스크립트를 사용한다. credentials 읽기와 플랫폼별 API 호출을 자동으로 처리한다.
 
 ```bash
-gh pr create \
-  --repo {repo} \
+node scripts/create-mr.js \
+  --skill-name {skill-name} \
+  --source-branch contrib/{skill-name}-{설명} \
   --title "[{skill-name}] 변경 요약" \
-  --body "변경 내용 상세"
+  --description "변경 내용 상세"
 ```
 
-### GitLab MR 생성
+스크립트가 성공하면 MR/PR URL을 stdout으로 출력한다.
 
-```bash
-curl --request POST \
-  --header "PRIVATE-TOKEN: {token}" \
-  "{gitlab-url}/api/v4/projects/{project-id}/merge_requests" \
-  --data "source_branch=contrib/{skill-name}-{설명}" \
-  --data "target_branch=master" \
-  --data "title=[{skill-name}] 변경 요약"
-```
+> **주의:** 생성된 위키 스킬에도 `scripts/create-mr.js`가 포함되어 있다.
+> 설치된 스킬에서 호출 시에는 스킬 디렉토리의 스크립트를 사용한다:
+> `node .agents/skills/{skill-name}/scripts/create-mr.js ...`
 
 ### 결과 보고
 

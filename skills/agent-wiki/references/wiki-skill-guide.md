@@ -115,11 +115,17 @@ CONTRIBUTING.md의 규칙에 따라 문서를 수정한다:
 
 #### 4. MR/PR 생성
 
-커밋 후 push하고, 플랫폼에 맞는 방식으로 MR/PR을 생성한다:
-- GitHub: `gh pr create`
-- GitLab: REST API로 MR 생성
-- 제목: `[{skill-name}] 변경 요약`
+커밋 후 push하고, `scripts/create-mr.js`로 MR/PR을 생성한다:
 
+```bash
+node scripts/create-mr.js \
+  --skill-name {skill-name} \
+  --source-branch contrib/{skill-name}-{설명} \
+  --title "[{skill-name}] 변경 요약" \
+  --description "변경 내용 상세"
+```
+
+스크립트가 credentials 읽기와 플랫폼별 API 호출을 자동으로 처리한다.
 MR/PR URL을 사용자에게 보고한다.
 
 ## 문서 수정 규칙
