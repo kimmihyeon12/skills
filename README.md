@@ -8,11 +8,11 @@
 | [agile-doc-creator](./skills/agile-doc-creator/) | 비정형 정보·소스코드에서 Product Brief, Backlog, Epic, User Story, DoD 생성·관리 |
 | [ia-doc-creator](./skills/ia-doc-creator/) | 비정형 정보·소스코드에서 Sitemap, User Flows, IA Audit 생성·관리 |
 | [pdf-parser](./skills/pdf-parser/) | PDF 파일에서 텍스트를 추출하여 .txt로 변환 |
+| [claude-discord-notify](./skills/claude-discord-notify/) | 작업 완료·확인 필요 시 Discord 웹훅으로 알림 전송 — OS 무관, Node.js만 있으면 동작 |
 | [html-prototype](./skills/html-prototype/) | 요구사항 문서·화면설계서에서 순수 HTML/CSS/JS 클릭 가능한 프로토타입 자동 생성 |
 | [media-storage](./skills/media-storage/) | 파일 업로드·저장소·첨부 관리 패턴 (R2, blob, 색상 추출) |
 | [sveltekit-progressive-architecture](./skills/sveltekit-progressive-architecture/) | SvelteKit 개발 가이드라인 |
 | [sveltekit-shadcn-guidline](./skills/sveltekit-shadcn-guidline/) | SvelteKit + shadcn-svelte 컴포넌트 활용 가이드 |
-| [vscode-claude-notify](./skills/vscode-claude-notify/) | VSCode Claude 알림 버그 우회 — OS 네이티브 알림으로 작업 완료·오류 수신 (Windows/macOS/WSL) |
 
 ## 설치하기
 
