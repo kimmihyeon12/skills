@@ -66,10 +66,10 @@ if (mode === 'notification') {
   const agentName = process.env.CLAUDE_MODEL || 'Claude Sonnet 4.6';
   sendEmbed(
     {
-      title: '확인이 필요합니다',
+      title: projectName,
       color: 16776960, // 노란색
-      description: 'Claude가 계속 진행하기 전에 입력을 기다리고 있습니다.',
-      footer: { text: `${projectName} · ${agentName}` },
+      description: '확인이 필요합니다',
+      footer: { text: agentName },
     },
     () => process.exit(0)
   );
@@ -96,10 +96,10 @@ process.stdin.on('end', () => {
 
   sendEmbed(
     {
-      title: '작업 완료',
+      title: projectName,
       color: 5763719, // 초록색
       description: summary,
-      footer: { text: `${projectName} · ${agentName}` },
+      footer: { text: agentName },
     },
     () => process.exit(0)
   );
