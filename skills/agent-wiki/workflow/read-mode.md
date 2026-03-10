@@ -1,16 +1,16 @@
 # READ 모드 — 위키 내용 파악
 
-현재 환경에서 위키 문서를 읽고 프로젝트 현황을 파악한다.
+현재 컨텍스트를 감지하고, AGENTS.md를 길잡이로 삼아 위키를 효율적으로 읽는다.
 
 ---
 
-## READ-step1 — 환경 감지
+## READ-step1 — 컨텍스트 감지
 
-| 조건 | 동작 |
-|------|------|
-| CWD에 `product-backlog.md` 있음 | 위키 워크스페이스 → CWD 루트에서 직접 읽기 |
-| `.gitmodules`에 `*-wiki` 항목 있음 | 서브모듈 → 해당 경로 안의 문서 읽기 |
-| 위 둘 다 해당 없음 | 중단 — 위키를 찾을 수 없다고 피드백 |
+| 조건 | 상황 | 동작 |
+|------|------|------|
+| CWD에 `AGENTS.md` 있음 | 위키 워크스페이스 직접 | CWD를 위키 루트로 사용 |
+| `.gitmodules`에 `*-wiki` 항목 있음 | 서브모듈 임베딩 | 서브모듈 경로를 위키 루트로 사용 |
+| 위 둘 다 해당 없음 | 위키 없음 | 중단 — 위키를 찾을 수 없다고 피드백. CREATE 또는 CONNECT 모드 안내 |
 
 서브모듈 경로 확인:
 
@@ -20,38 +20,46 @@ git config --file .gitmodules --get-regexp path | grep wiki
 
 ---
 
-## READ-step2 — 문서 읽기
+## READ-step2 — AGENTS.md 읽기
 
-아래 순서로 읽는다. 존재하지 않는 파일은 건너뛴다.
+위키 루트의 `AGENTS.md`를 먼저 읽는다.
 
-| 순서 | 파일 | 파악 목적 |
-|------|------|-----------|
-| 1 | `product-backlog.md` | 전체 Epic/Story 현황, ID 범위 |
-| 2 | `product-brief.md` | 제품 컨텍스트 (제품명, 플랫폼, 대상 사용자) |
-| 3 | `sitemap.md` | 화면 구성 및 MVP 범위 |
-| 4 | `data-model.md` | 엔티티 구조 |
-| 5 | 개별 `epics/ep-*.md` | 필요 시 Epic 상세 확인 |
-| 6 | 개별 `user-stories/us-*.md` | 필요 시 Story 상세 확인 |
+AGENTS.md에서 파악할 것:
+
+| 항목 | 용도 |
+|------|------|
+| **읽기 순서** | 어떤 파일을 먼저 읽을지 결정 |
+| **문서 구조** | 어떤 파일/폴더가 어떤 역할인지 파악 |
+| **작업 안내** | 특이사항, 패턴, 규칙 |
+
+AGENTS.md가 없는 경우:
+→ CREATE 모드로 워크스페이스를 초기화하도록 안내.
 
 ---
 
-## READ-step3 — 요약 보고
+## READ-step3 — 문서 읽기
 
-읽은 내용을 바탕으로 아래 항목을 보고한다:
+AGENTS.md의 읽기 순서를 따라 파일을 읽는다.
 
-**프로젝트 개요**
-- 제품명, 플랫폼, 대상 사용자 (product-brief.md 기준)
+- 존재하지 않는 파일은 건너뛴다
+- 파일이 많으면 AGENTS.md가 지정한 우선순위대로 읽고, 나머지는 필요 시 읽는다
+- 대용량 파일은 내용 일부를 읽고 구조 파악에 집중한다
 
-**Epic/Story 현황**
-- Epic 수, Story 수
-- 상태 분포 (pending / in-progress / blocked / review-needed / done / cancelled)
-- 우선순위 분포 (Must / Should / Could)
+---
 
-**MVP 범위**
-- sitemap.md 기준으로 MVP 포함 화면 목록
-- sitemap.md가 없으면 Must 스토리 기준
+## READ-step4 — 요약 보고
 
-**주목할 항목**
-- 현재 `in-progress` 또는 `blocked` 상태인 Story
-- `review-needed` 상태로 검토 대기 중인 Story
-- `agent-note`에 인계 메시지가 있는 Story
+읽은 내용을 기반으로 보고한다:
+
+**워크스페이스 개요**
+- 목적, 주요 문서 유형, 전체 파일 수
+
+**핵심 문서 현황**
+- AGENTS.md가 지정한 주요 문서들의 상태 요약
+
+**주목할 항목** (해당하는 경우)
+- 진행 중, 블로킹, 검토 대기 중인 항목
+- `agent-note` 또는 인계 메시지가 있는 항목
+
+**에이전트가 할 수 있는 다음 작업**
+- 파악된 컨텍스트 기반으로 제안 (문서 추가, 수정, 상태 업데이트 등)

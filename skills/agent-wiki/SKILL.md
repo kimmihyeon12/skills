@@ -1,25 +1,23 @@
 ---
 name: agent-wiki
 description: >
-  비정형 정보(기획 메모, 클라이언트 요청, 아이디어, RFP 등)를 받아
-  [project]-wiki 워크스페이스를 생성하고 Product Brief, Product Backlog,
-  Epic, User Story, DoD, Sitemap, Data Model 문서를 관리한다.
-  인수 조건은 Given-When-Then 형식으로 작성하고, 7단계 상태로 Story 진행을 추적한다.
-  소스코드 프로젝트에서는 기존 위키를 git submodule로 연결하여 에이전트 컨텍스트를 제공하고,
-  업데이트는 서브모듈에서 직접 commit·push → PR 사이클로 수행한다.
-  트리거: "백로그 만들어줘", "유저스토리 정리", "에픽 뽑아줘", "위키 만들어줘",
-  "agent-wiki", "에이전트 위키", "요구사항을 스토리로", "백로그 업데이트",
-  "스토리 추가해줘", "이슈 정리해줘", "버그 추가해줘",
-  "서브모듈 추가", "위키 내용 파악", "위키 업데이트"
+  어떤 정보 공간이든 git 기반 위키 워크스페이스로 만들고 관리하는 인터페이스 스킬.
+  문서 내용이나 형식에 상관없이 작업 영역을 git 워크스페이스로 초기화하고,
+  AGENTS.md를 동적으로 생성하여 에이전트가 효율적으로 읽고 작업하도록 안내한다.
+  소스코드 프로젝트에서는 기존 위키를 git submodule로 연결하여 에이전트 컨텍스트를 제공한다.
+  트리거: "위키 만들어줘", "워크스페이스 만들어줘", "이 폴더를 위키로", "서브모듈 연결해줘",
+  "위키 연결해줘", "위키 내용 파악해줘", "위키 업데이트", "위키 읽어줘",
+  "agent-wiki", "에이전트 위키", "submodule 추가", "위키 초기화"
 metadata:
   author: dev-goraebap
-  version: "3.1"
+  version: "4.0"
 ---
 
 # agent-wiki
 
-비정형 정보를 받아 **Product Brief, Product Backlog, Epic, User Story, DoD, Sitemap, Data Model** 문서를 생성·관리한다.
-소스코드 프로젝트에서는 위키를 git submodule로 연결하여 에이전트 컨텍스트를 제공한다.
+어떤 정보 공간이든 **git 기반 워크스페이스 인터페이스**로 만들고 관리한다.
+문서 유형(애자일, IA, 기술 문서 등)에 구애받지 않으며, 내용은 `agile-doc-creator`·`ia-doc-creator` 등 전문 스킬이 담당한다.
+이 스킬의 핵심은 **AGENTS.md** — 에이전트가 워크스페이스를 읽고 작업할 때 따르는 동적 길잡이.
 
 ## 모드 감지
 
@@ -27,53 +25,52 @@ metadata:
 
 | 조건 | 모드 | workflow 파일 |
 |------|------|--------------|
-| "help"/"이 스킬 뭐야"/"어떤걸 할 수 있어"/"사용법" 등 스킬 자체에 대한 질문 | GUIDE | `workflow/guide-mode.md` |
+| "help"/"사용법"/"뭐야"/"어떤 걸 할 수 있어" 등 스킬 자체 질문 | GUIDE | `workflow/guide-mode.md` |
 | URL 인수 + "연결"/"서브모듈"/"connect" 키워드 | CONNECT | `workflow/connect-mode.md` |
-| "read"/"내용 파악"/"분석해줘" 단독 요청 | READ | `workflow/read-mode.md` |
-| "update"/"업데이트"/"수정" 요청 또는 CWD에 `product-backlog.md` 있음 | UPDATE | `workflow/update-mode.md` |
-| "create"/"새 프로젝트"/"위키 만들어줘" 또는 그 외 기획 정보 제공 | CREATE | `workflow/create-mode.md` |
+| "read"/"읽어줘"/"내용 파악"/"분석해줘" 단독 요청 | READ | `workflow/read-mode.md` |
+| "update"/"업데이트"/"수정"/"추가" 요청 또는 CWD에 `AGENTS.md` 있음 | UPDATE | `workflow/update-mode.md` |
+| "create"/"새로 만들어줘"/"위키 만들어줘"/"초기화" 또는 그 외 | CREATE | `workflow/create-mode.md` |
 
-## 위키 워크스페이스 구조
+## 워크스페이스 구조
+
+agent-wiki는 내용 구조를 강제하지 않는다. 최소 공통 파일만 생성한다:
 
 ```
 [project]-wiki/
-├── AGENTS.md               ← 위키 메타 + 에이전트 지시사항
-├── README.md
-├── .gitignore
-├── product-brief.md        ← 제품 컨텍스트
-├── product-backlog.md      ← 전체 인덱스 (진입점)
-├── definition-of-done.md
-├── sitemap.md              ← 화면 목록 (UI 정보 있을 때 자동 생성)
-├── data-model.md           ← 엔티티 정의 (MVP 프론트 검토 후 생성)
-├── epics/ep-NNN-[슬러그].md
-├── user-stories/us-NNN-[슬러그].md
-├── scripts/                ← PDF 추출 유틸
-└── .sources/               ← 입력 원본 보관
+├── AGENTS.md       ← 워크스페이스 길잡이 (동적 생성, 읽기 순서 + 구조 설명)
+├── README.md       ← 워크스페이스 소개
+├── .gitignore      ← 에이전트 캐시 등 제외
+└── ...             ← 실제 문서 (유형 자유)
 ```
 
-지원 입력: `.pdf`, `.txt`, `.md`, 구두 설명. 그 외는 변환 요청.
+**AGENTS.md 원칙:**
+- 짧게 — 내용을 담는 곳이 아니라 **길잡이**
+- 읽기 순서 명시 — 에이전트가 어디서 시작할지 바로 알 수 있어야 함
+- 구조 설명 — 각 파일/폴더의 역할을 한 줄씩
+- 작업 안내 — 이 워크스페이스의 규칙·패턴 (있다면)
 
 ## 참고 파일
 
-### Workflow (모드별 실행 절차)
+### Workflow
 
 | 파일 | 역할 |
 |------|------|
 | `workflow/guide-mode.md` | 스킬 안내 (GUIDE) |
-| `workflow/create-mode.md` | 신규 위키 생성 (CREATE-step1~5) |
+| `workflow/create-mode.md` | 워크스페이스 초기화 (CREATE) |
 | `workflow/connect-mode.md` | 서브모듈 연결 (CONNECT) |
-| `workflow/read-mode.md` | 위키 내용 파악 (READ-step1~3) |
-| `workflow/update-mode.md` | 기존 문서 변경 (UPDATE-step1~4) |
+| `workflow/read-mode.md` | 위키 내용 파악 (READ) |
+| `workflow/update-mode.md` | 문서 변경 (UPDATE) |
 
-### References (문서별 작성 규칙)
+### Templates
 
 | 파일 | 역할 |
 |------|------|
-| `references/product-brief-guide.md` | Product Brief 템플릿 + 작성 규칙 |
-| `references/product-backlog-guide.md` | Backlog 템플릿 + 소스 이력 + 링크 패턴 |
-| `references/epic-guide.md` | Epic 템플릿 + ID/파일명 규칙 |
-| `references/user-story-guide.md` | Story 템플릿 + AC(GWT) + 7단계 상태 + agent-note |
-| `references/dod-guide.md` | DoD 체크리스트 템플릿 |
-| `references/wiki-agents-guide.md` | AGENTS.md/README/CONTRIBUTING/.gitignore 템플릿 + 이름 규칙 |
-| `references/sitemap-guide.md` | Sitemap 생성 규칙 + 도출 기준 |
-| `references/data-model-guide.md` | Data Model 생성 조건 + 도출 규칙 |
+| `templates/agents-md.md` | AGENTS.md 구조 가이드 |
+| `templates/README.md` | README 구조 가이드 |
+| `templates/.gitignore` | 기본 .gitignore |
+
+### References
+
+| 파일 | 역할 |
+|------|------|
+| `references/wiki-agents-guide.md` | 워크스페이스 이름 규칙 + 기반 파일 작성 규칙 |
