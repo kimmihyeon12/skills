@@ -57,17 +57,6 @@ function sendEmbed(embed, done) {
   req.end();
 }
 
-function extractText(content) {
-  if (typeof content === 'string') return content;
-  if (Array.isArray(content)) {
-    return content
-      .filter((c) => c.type === 'text')
-      .map((c) => c.text)
-      .join('');
-  }
-  return '';
-}
-
 // ── Mode ──────────────────────────────────────────────────────────────────────
 
 const mode = process.argv[2] || 'stop';
@@ -100,30 +89,16 @@ process.stdin.on('end', () => {
     process.exit(0);
   }
 
-  const transcript = payload.transcript || [];
-  const projectName = path.basename(process.cwd());
+  // 실제 페이로드 구조: last_assistant_message, cwd 직접 제공
+  const summary = (payload.last_assistant_message || '(없음)').slice(0, 500);
+  const projectName = payload.cwd ? path.basename(payload.cwd) : path.basename(process.cwd());
   const agentName = process.env.CLAUDE_MODEL || 'Claude Sonnet 4.6';
-
-  // 마지막 사용자 메시지
-  const userMsgs = transcript.filter((m) => m.role === 'user');
-  const lastUser = userMsgs[userMsgs.length - 1];
-  const userText = lastUser
-    ? extractText(lastUser.content).slice(0, 100)
-    : '(없음)';
-
-  // 마지막 어시스턴트 메시지
-  const assistantMsgs = transcript.filter((m) => m.role === 'assistant');
-  const lastAssistant = assistantMsgs[assistantMsgs.length - 1];
-  const summary = lastAssistant
-    ? extractText(lastAssistant.content).slice(0, 500)
-    : '(없음)';
 
   sendEmbed(
     {
       title: '✅ 작업 완료',
       color: 5763719, // 초록색
       fields: [
-        { name: '💬 요청', value: userText, inline: false },
         { name: '📝 요약', value: summary, inline: false },
         { name: '📁 프로젝트', value: projectName, inline: true },
         { name: '🤖 에이전트', value: agentName, inline: true },
