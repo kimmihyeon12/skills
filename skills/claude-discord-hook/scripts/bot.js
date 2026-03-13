@@ -31,6 +31,7 @@ const CLAUDE_PATH = config.claudePath || 'claude';
 
 const pendingRequests = new Map();
 const pendingCommands = new Map(); // 프로젝트 선택 대기 중인 명령
+const pendingInputs = new Map(); // 명령어 입력 대기 중인 사용자
 const runningTasks = new Map(); // 실행 중인 claude 프로세스 관리
 let targetChannel = null;
 
@@ -108,6 +109,25 @@ client.on('messageCreate', async (msg) => {
 
   const content = msg.content.trim();
 
+  // !help - 사용법
+  if (content === '!help') {
+    const helpEmbed = new EmbedBuilder()
+      .setTitle('\u{1F4D6} Claude Code Bot 사용법')
+      .setColor(0x3498DB)
+      .addFields(
+        { name: '`!run`', value: '프로젝트 선택 → 명령 입력 순서로 실행' },
+        { name: '`!run <명령>`', value: '기본 프로젝트에 명령 실행' },
+        { name: '`!run project명: <명령>`', value: '특정 프로젝트에 명령 실행' },
+        { name: '`!cancel`', value: '실행 중인 작업 취소' },
+        { name: '`!projects`', value: '등록된 프로젝트 목록' },
+        { name: '`!help`', value: '이 도움말 표시' },
+      )
+      .setFooter({ text: 'Claude Code Discord Bot' })
+      .setTimestamp();
+    await msg.reply({ embeds: [helpEmbed] });
+    return;
+  }
+
   // !cancel - 실행 중인 작업 취소
   if (content === '!cancel') {
     const task = runningTasks.get(msg.channel.id);
@@ -128,8 +148,16 @@ client.on('messageCreate', async (msg) => {
     return;
   }
 
-  // !run [project:] <명령> - Claude Code 실행
-  if (!content.startsWith('!run ')) return;
+  // 명령어 입력 대기 중인 사용자의 메시지 처리
+  const pendingInput = pendingInputs.get(msg.author.id);
+  if (pendingInput && !content.startsWith('!')) {
+    pendingInputs.delete(msg.author.id);
+    pendingInput.resolve(content);
+    return;
+  }
+
+  // !run [project:] [명령] - Claude Code 실행
+  if (content !== '!run' && !content.startsWith('!run ')) return;
 
   // 이미 실행 중인 작업 확인
   if (runningTasks.has(msg.channel.id)) {
@@ -137,65 +165,85 @@ client.on('messageCreate', async (msg) => {
     return;
   }
 
-  let command = content.slice(5).trim();
+  let command = content.slice(4).trim(); // "!run" 이후
   let projectDir = null;
   let selectedProjectName = null;
 
   // project: 접두사 파싱
-  const projectMatch = command.match(/^(\S+):\s*([\s\S]+)$/);
-  if (projectMatch && PROJECTS[projectMatch[1]]) {
-    selectedProjectName = projectMatch[1];
-    projectDir = PROJECTS[selectedProjectName];
-    command = projectMatch[2].trim();
-  }
-
-  if (!command) {
-    await msg.reply({ embeds: [new EmbedBuilder().setTitle('\u{2753} 사용법').setDescription('`!run <명령>`\n`!run project명: <명령>`\n`!cancel` - 작업 취소\n`!projects` - 프로젝트 목록').setColor(0x3498DB)] });
-    return;
+  if (command) {
+    const projectMatch = command.match(/^(\S+):\s*([\s\S]+)$/);
+    if (projectMatch && PROJECTS[projectMatch[1]]) {
+      selectedProjectName = projectMatch[1];
+      projectDir = PROJECTS[selectedProjectName];
+      command = projectMatch[2].trim();
+    }
   }
 
   const projectNames = Object.keys(PROJECTS);
 
-  // 프로젝트 미지정 + 여러 개 → 버튼으로 선택
-  if (!projectDir && projectNames.length > 1) {
-    const cmdId = Date.now().toString(36);
-    const selectEmbed = new EmbedBuilder()
-      .setTitle('\u{1F4C2} 프로젝트 선택')
-      .setDescription('```\n' + command.slice(0, 500) + '\n```')
-      .setColor(0x3498DB)
-      .setTimestamp();
+  // 프로젝트 선택 (미지정 시)
+  if (!projectDir) {
+    if (projectNames.length > 1) {
+      const cmdId = Date.now().toString(36);
+      const selectEmbed = new EmbedBuilder()
+        .setTitle('\u{1F4C2} 프로젝트 선택')
+        .setDescription(command ? '```\n' + command.slice(0, 500) + '\n```' : '프로젝트를 선택하세요')
+        .setColor(0x3498DB)
+        .setTimestamp();
 
-    const row = new ActionRowBuilder();
-    for (const name of projectNames) {
-      row.addComponents(
-        new ButtonBuilder()
-          .setCustomId(`project:${name}:${cmdId}`)
-          .setLabel(name)
-          .setStyle(name === DEFAULT_PROJECT ? ButtonStyle.Primary : ButtonStyle.Secondary),
-      );
+      const row = new ActionRowBuilder();
+      for (const name of projectNames) {
+        row.addComponents(
+          new ButtonBuilder()
+            .setCustomId(`project:${name}:${cmdId}`)
+            .setLabel(name)
+            .setStyle(name === DEFAULT_PROJECT ? ButtonStyle.Primary : ButtonStyle.Secondary),
+        );
+      }
+
+      await msg.reply({ embeds: [selectEmbed], components: [row] });
+
+      // 30초 대기
+      selectedProjectName = await new Promise((resolve) => {
+        pendingCommands.set(cmdId, { resolve });
+        setTimeout(() => {
+          if (pendingCommands.has(cmdId)) {
+            pendingCommands.delete(cmdId);
+            resolve(null);
+          }
+        }, 30000);
+      });
+
+      if (!selectedProjectName) return; // 타임아웃
+      projectDir = PROJECTS[selectedProjectName];
+    } else {
+      selectedProjectName = DEFAULT_PROJECT || projectNames[0];
+      projectDir = PROJECTS[selectedProjectName] || process.cwd();
     }
-
-    await msg.reply({ embeds: [selectEmbed], components: [row] });
-
-    // 30초 대기
-    selectedProjectName = await new Promise((resolve) => {
-      pendingCommands.set(cmdId, { resolve });
-      setTimeout(() => {
-        if (pendingCommands.has(cmdId)) {
-          pendingCommands.delete(cmdId);
-          resolve(null);
-        }
-      }, 30000);
-    });
-
-    if (!selectedProjectName) return; // 타임아웃
-    projectDir = PROJECTS[selectedProjectName];
   }
 
-  // 프로젝트 1개이거나 기본 프로젝트 사용
-  if (!projectDir) {
-    selectedProjectName = DEFAULT_PROJECT || projectNames[0];
-    projectDir = PROJECTS[selectedProjectName] || process.cwd();
+  // 명령어가 없으면 입력 대기
+  if (!command) {
+    const inputEmbed = new EmbedBuilder()
+      .setTitle('\u{1F4DD} 명령을 입력하세요')
+      .setDescription(`**${selectedProjectName}** 프로젝트에 실행할 명령을 채팅으로 입력하세요`)
+      .setColor(0x3498DB)
+      .setFooter({ text: '60초 내 입력 | !cancel로 취소' })
+      .setTimestamp();
+
+    await msg.reply({ embeds: [inputEmbed] });
+
+    command = await new Promise((resolve) => {
+      pendingInputs.set(msg.author.id, { resolve });
+      setTimeout(() => {
+        if (pendingInputs.has(msg.author.id)) {
+          pendingInputs.delete(msg.author.id);
+          resolve(null);
+        }
+      }, 60000);
+    });
+
+    if (!command) return; // 타임아웃
   }
 
   const startEmbed = new EmbedBuilder()
