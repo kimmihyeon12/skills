@@ -1,0 +1,8 @@
+{
+  "name": "claude-discord-hook-scripts",
+  "version": "1.0.0",
+  "description": "Claude Code Discord hook scripts",
+  "dependencies": {
+    "discord.js": "^14.25.1"
+  }
+}

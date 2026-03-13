@@ -1,0 +1,10 @@
+{
+  "botToken": "YOUR_DISCORD_BOT_TOKEN",
+  "channelId": "YOUR_DISCORD_CHANNEL_ID",
+  "httpPort": 47391,
+  "projects": {
+    "my-project": "/path/to/my-project"
+  },
+  "defaultProject": "my-project",
+  "claudePath": "claude"
+}
