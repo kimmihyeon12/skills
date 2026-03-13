@@ -6,6 +6,7 @@ const path = require('path');
 const { Client, GatewayIntentBits, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const http = require('http');
 const { spawn } = require('child_process');
+const os = require('os');
 
 // 설정 파일 로드
 const CONFIG_PATH = path.join(__dirname, '..', 'config.json');
@@ -213,11 +214,16 @@ client.on('messageCreate', async (msg) => {
   for (const key of Object.keys(cleanEnv)) {
     if (key.startsWith('CLAUDE')) delete cleanEnv[key];
   }
-  const proc = spawn(CLAUDE_PATH, ['-p', command, '--output-format', 'text', '--dangerously-skip-permissions'], {
+  // 한글 명령어를 임시 파일에 저장해서 전달 (shell 인코딩 문제 방지)
+  const tmpFile = path.join(os.tmpdir(), `claude-cmd-${Date.now()}.txt`);
+  fs.writeFileSync(tmpFile, command, 'utf8');
+  const proc = spawn(process.execPath, [
+    path.join(__dirname, 'run-claude.js'),
+    tmpFile,
+  ], {
     cwd: projectDir,
-    shell: true,
     env: cleanEnv,
-    timeout: 600000, // 10분 타임아웃
+    timeout: 600000,
   });
 
   runningTasks.set(msg.channel.id, { process: proc, statusMsg });
